@@ -1,15 +1,15 @@
 {
-  "name": "ci-template-project",
+  "name": "blue-line-api",
   "version": "1.0.0",
-  "description": "A template project for CI/CD",
+  "description": "API for the Blue Line project",
   "scripts": {
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
-    "commitlint": "^17.7.2",
-    "husky": "^8.0.3",
-    "semantic-release": "^22.0.5"
+    "commitlint": "^19.5.0",
+    "husky": "^9.1.6",
+    "semantic-release": "^24.2.0"
   },
   "husky": {
     "hooks": {
@@ -25,7 +25,7 @@
     "branches": [
       "main"
     ],
-    "repositoryUrl": "https://github.com/robjo82/ci-template.git",
+    "repositoryUrl": "https://github.com/Fisa-Tech/blue-line-api.git",
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",

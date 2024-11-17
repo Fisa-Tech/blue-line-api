@@ -1,0 +1,39 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/blue-line}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: info
+      springframework:
+        jdbc:
+          core: info
+    root: info
+
+jwt:
+  secret: yCEejd7w8gmc2LO4iv6vZYYW9yL2p1i3za9Fhm9ZdN2MmkFQ39t0RCWoOjC8TOnMNzH8fFVGKU6xffDYciRnAFTfakY8orzK6ShGlwJEnW4Ok9oHFUKx0XSTOrl14Ixa
+  expiration: 86400000

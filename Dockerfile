@@ -1,41 +1,28 @@
-# Utilisez une image de base. Remplacez <langage> et <version> par ce qui est approprié pour votre projet
-# Exemples : 
-# FROM node:14
-# FROM python:3.9
-# FROM openjdk:11
-# FROM golang:1.17
-# FROM ruby:2.7
-FROM <langage>:<version>
+# Étape 1 : Builder Maven
+FROM maven:3.9.9 AS build
 
-LABEL authors="Robin"
+WORKDIR /build
 
-# Installez les dépendances globales ou les outils nécessaires
-# RUN npm install -g <outil>
+# Copier le fichier POM et télécharger les dépendances en mode hors-ligne (cache Maven)
+COPY pom.xml /build/pom.xml
+RUN mvn dependency:go-offline
 
-# Définissez le répertoire de travail dans le conteneur
+# Copier les sources et construire le projet
+COPY src /build/src
+RUN mvn clean package -DskipTests
+
+# Étape 2 : Image finale avec OpenJDK
+FROM openjdk:23 AS runtime
+
+# Définir un répertoire pour l'application
 WORKDIR /app
 
-# Copiez les fichiers locaux dans le conteneur
-COPY . .
+# Copier le fichier JAR depuis l'étape de build
+COPY --from=build /build/target/*.jar /app/app.jar
 
-# Installez les dépendances du projet
-# Utilisez le gestionnaire de paquets approprié pour votre langage
-# Exemples :
-# RUN npm install
-# RUN pip install -r requirements.txt
-# RUN bundle install
-# RUN go mod download
-RUN <commande_d_installation>
+# Créer un utilisateur non-root
+RUN useradd -r -m -d /app appuser
+USER appuser
 
-# Exposez le port que votre application utilise
-# Remplacez <port> par le numéro de port approprié
-EXPOSE <port>
-
-# Commande pour exécuter votre application
-# Remplacez <commande> par la commande qui lance votre application
-# Exemples :
-# CMD ["npm", "start"]
-# CMD ["python", "app.py"]
-# CMD ["java", "-jar", "app.jar"]
-# CMD ["./monexecutable"]
-CMD ["<commande>"]
+# Commande par défaut
+ENTRYPOINT ["java", "-jar", "app.jar"]
