@@ -19,6 +19,11 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.2.0'
+
       - name: Install dependencies
         run: npm install
 
