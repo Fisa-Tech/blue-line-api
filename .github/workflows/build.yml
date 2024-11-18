@@ -33,12 +33,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
+        if: github.ref_name == 'main' || github.ref_name == 'develop'
         run: |
           docker build -t registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} .
         env:
           DOCKER_BUILDKIT: 1
 
       - name: Log in to Docker registry
+        if: github.ref_name == 'main' || github.ref_name == 'develop'
         run: docker login registry.robin-joseph.fr
         env:
           USERNAME: ${{ secrets.REGISTRY_USERNAME }}
