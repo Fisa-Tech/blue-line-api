@@ -27,7 +27,44 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build Java Application
+        run: |
+          # Commandes pour construire votre application Java
+          mvn clean package
+
+      - name: Build Docker image
+        run: |
+          docker build -t registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} .
+        env:
+          DOCKER_BUILDKIT: 1
+
+      - name: Log in to Docker registry
+        run: docker login registry.robin-joseph.fr
+        env:
+          USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Tag and Push Docker image for develop
+        if: github.ref_name == 'develop'
+        run: |
+          docker tag registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} registry.robin-joseph.fr/blue-line-api:develop
+          docker push registry.robin-joseph.fr/blue-line-api:develop
+
       - name: Semantic Release
+        if: github.ref_name == 'main'
         run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and Push Docker image for main
+        if: github.ref_name == 'main'
+        run: |
+          # Get the version from the semantic-release output
+          VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | awk '{print $6}')
+          echo "Version is $VERSION"
+          # Tag the image with the latest tag and version
+          docker tag registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} registry.robin-joseph.fr/blue-line-api:latest
+          docker tag registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} registry.robin-joseph.fr/blue-line-api:$VERSION
+          # Push the images to the registry
+          docker push registry.robin-joseph.fr/blue-line-api:latest
+          docker push registry.robin-joseph.fr/blue-line-api:$VERSION
