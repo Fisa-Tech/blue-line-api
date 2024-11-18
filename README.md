@@ -126,10 +126,10 @@ We adhere to the **Conventional Commits** specification and use **gitmoji** for 
 To streamline writing commit messages in IntelliJ IDEA, you can use the following prompt:
 
 ```
-Start with an emoji from the Gitmoji convention that matches the content of the commit. Use the actual emoji character, not :name_of_the_emoji:.
 Follow the Conventional Commits specification:
-- Format: <emoji> <type>(optional scope): short description
+- Format:  <type>(optional scope): <emoji> short description
 - Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+Add an emoji from the Gitmoji convention that matches the content of the commit after the ":". Use the actual emoji character, not :name_of_the_emoji:.
 Start with a short imperative sentence, no more than 50 characters long.
 Leave an empty line after the first line.
 Provide a more detailed explanation in two or three sentences at most. Avoid overly verbose descriptions or unnecessary details. Be careful not to repeat the same information.
