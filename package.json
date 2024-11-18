@@ -1,6 +1,6 @@
 {
   "name": "blue-line-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "API for the Blue Line project",
   "scripts": {
     "semantic-release": "semantic-release"
