@@ -1,28 +1,28 @@
-# Étape 1 : Builder Maven
-FROM maven:3.9.9 AS build
+# Étape 1 : Construction avec Maven et Java 21
+FROM maven:3.9.4-eclipse-temurin-21 AS build
 
 WORKDIR /build
 
-# Copier le fichier POM et télécharger les dépendances en mode hors-ligne (cache Maven)
+# Copier le fichier POM et télécharger les dépendances
 COPY pom.xml /build/pom.xml
 RUN mvn dependency:go-offline
 
-# Copier les sources et construire le projet
+# Copier le code source et construire le projet
 COPY src /build/src
 RUN mvn clean package -DskipTests
 
-# Étape 2 : Image finale avec OpenJDK
-FROM openjdk:23 AS runtime
+# Étape 2 : Image finale avec OpenJDK 21
+FROM eclipse-temurin:21-jdk AS runtime
 
-# Définir un répertoire pour l'application
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier JAR depuis l'étape de build
+# Copier le fichier JAR depuis l'étape de construction
 COPY --from=build /build/target/*.jar /app/app.jar
 
-# Créer un utilisateur non-root
+# Créer un utilisateur non-root pour des raisons de sécurité
 RUN useradd -r -m -d /app appuser
 USER appuser
 
-# Commande par défaut
+# Définir la commande par défaut
 ENTRYPOINT ["java", "-jar", "app.jar"]
