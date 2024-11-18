@@ -27,10 +27,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Java Application
-        run: |
-          # Commandes pour construire votre application Java
-          mvn clean package
+      - name: Semantic Release
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
         run: |
@@ -49,12 +49,6 @@ jobs:
         run: |
           docker tag registry.robin-joseph.fr/blue-line-api:${{ github.ref_name }} registry.robin-joseph.fr/blue-line-api:develop
           docker push registry.robin-joseph.fr/blue-line-api:develop
-
-      - name: Semantic Release
-        if: github.ref_name == 'main'
-        run: npm run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag and Push Docker image for main
         if: github.ref_name == 'main'
