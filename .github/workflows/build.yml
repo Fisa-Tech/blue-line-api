@@ -42,10 +42,7 @@ jobs:
 
       - name: Log in to Docker registry
         if: github.ref_name == 'main' || github.ref_name == 'develop'
-        run: docker login registry.robin-joseph.fr
-        env:
-          USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login registry.robin-joseph.fr --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
 
       - name: Tag and Push Docker image for develop
         if: github.ref_name == 'develop'
