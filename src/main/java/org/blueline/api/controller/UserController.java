@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Validated
-@Tag(name = "User", description = "Specific to users, manages the registration, login, update and deletion of users.")
+@Tag(name = "User", description = "Specific to users, manages the registration, login, update and deletion of users. The user must be authenticated to update or delete himself.")
 public class UserController {
 
     private final UserService userService;
