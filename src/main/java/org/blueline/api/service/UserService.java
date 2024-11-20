@@ -34,10 +34,7 @@ public class UserService {
 
     public UserDto updateMe(Authentication authentication, UserDto userDto) {
         User user = authService.authenticate(authentication);
-
-        user.setAddress(userDto.getAddress());
         user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
 
         return modelMapper.map(userRepository.save(user), UserDto.class);
     }

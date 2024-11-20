@@ -17,8 +17,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public String login(String email, String password) {
-        User user = userRepository.findByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UnauthorizedException("Invalid login credentials"));
+        if (passwordEncoder.matches(password, user.getPassword())) {
             return jwtService.generateToken(user);
         }
         throw new UnauthorizedException("Invalid login credentials");

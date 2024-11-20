@@ -9,10 +9,15 @@ public class UserDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-    private String username;
+
+    private @Email String email;
+
+    private String firstName;
+
+    private String lastName;
+
     @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
-    private @Email String email;
-    private String address;
+
     private boolean isAdmin;
 }

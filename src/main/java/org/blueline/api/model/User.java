@@ -3,6 +3,8 @@ package org.blueline.api.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -12,18 +14,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "address", nullable = false)
-    private String address;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OAuth2Token> tokens;
 }
