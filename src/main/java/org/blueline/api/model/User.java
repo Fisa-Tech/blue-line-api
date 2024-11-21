@@ -20,11 +20,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;

@@ -64,20 +64,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain oauth2FilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/oauth2/**", "/login/oauth2/**", "/strava/webhook/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/strava/webhook/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/strava/webhook/**"
+                        ).permitAll()
+                        .anyRequest().authenticated() // Protège les endpoints OAuth2 restants
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService())
                         )
+                        .defaultSuccessUrl("/oauth2/success", true)
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
     }
+
 
     /**
      * OAuth2UserService to handle OAuth2 user information

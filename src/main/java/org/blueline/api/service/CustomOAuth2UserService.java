@@ -34,9 +34,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String firstName = oAuth2User.getAttribute("firstname");
         String lastName = oAuth2User.getAttribute("lastname");
 
-        User user = userRepository.findByFirstNameAndLastName(firstName, lastName).orElse(new User());
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+        User user = userRepository.findByFirstnameAndLastname(firstName, lastName).orElse(new User());
+        user.setFirstname(firstName);
+        user.setLastname(lastName);
         user.setEmail("test@gmail.com");
 
         OAuth2Token token = tokenRepository.findByUserAndProvider(user, provider).orElse(new OAuth2Token());
