@@ -9,5 +9,4 @@ public class BlueLineApplication {
     public static void main(String[] args) {
         SpringApplication.run(BlueLineApplication.class, args);
     }
-
 }
