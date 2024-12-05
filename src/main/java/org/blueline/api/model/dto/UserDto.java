@@ -21,8 +21,8 @@ public class UserDto {
     @Schema(description = "User's last name", required = true)
     private String lastname;
 
-    @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
-    private String password;
+    // @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
+    // private String password;
 
     private @Email String email;
 
