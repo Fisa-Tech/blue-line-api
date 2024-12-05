@@ -38,7 +38,7 @@ public class UserService {
         user.setAddress(userDto.getAddress());
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
-
+        user.setSex(userDto.getSex());
         return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
