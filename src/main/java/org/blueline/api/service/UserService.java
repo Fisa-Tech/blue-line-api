@@ -39,9 +39,12 @@ public class UserService {
         user.setLastname(userDto.getLastname());
         user.setEmail(userDto.getEmail());
         user.setSex(userDto.getSex());
-        
+        user.setAvatar(userDto.getAvatar());
+        user.setStatus(userDto.getStatus());
+    
         return modelMapper.map(userRepository.save(user), UserDto.class);
     }
+    
     
     public UserDto updatePassword(String oldPassword, String newPassword, Authentication authentication) {
         User user = authService.authenticate(authentication);
