@@ -130,3 +130,5 @@ dist
 
 # IntelliJ
 .idea/
+
+target/

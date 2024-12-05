@@ -15,6 +15,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <postgresql.version>42.7.4</postgresql.version>
         <spring-boot.version>3.3.5</spring-boot.version>
@@ -22,6 +24,8 @@
         <modelmapper.version>3.2.1</modelmapper.version>
         <springdoc.version>2.6.0</springdoc.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <liquibase.version>4.30.0</liquibase.version>
+        <hibernate.version>6.6.3.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -48,6 +52,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate6</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <!-- Lombok -->
@@ -112,6 +136,25 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/db/migrations/${timestamp}_changelog.yaml</changeLogFile>
+                    <diffChangeLogFile>
+                        src/main/resources/db/migrations/${timestamp}-migration.sql
+                    </diffChangeLogFile>
+                    <url>jdbc:postgresql://localhost:5432/blue-line</url>
+                    <referenceUrl>hibernate:spring:org.blueline.api.model?dialect=org.hibernate.dialect.PostgreSQLDialect</referenceUrl>
+                    <username>postgres</username>
+                    <password>password</password>
+                    <defaultSchemaName />
+                    <driver>org.postgresql.Driver</driver>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -2,6 +2,7 @@ package org.blueline.api.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.blueline.api.model.enums.Sex;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +24,10 @@ public class User {
 
     @Column(name = "address", nullable = false)
     private String address;
+
+    @Column(name = "sexe", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Sex sexe;
 
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;

@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - include:
+      file: db/migrations/0001-initial-schema.sql
+
+  - changeSet:
+      id: 0002-add-sex-column-to-user.sql
+      author: Aurélien
+      changes:
+        - sqlFile:
+            path: 0002-add-sex-column-to-user.sql
+            relativeToChangelogFile: true
+            encoding: UTF-8
+            splitStatements: true
+            stripComments: true
