@@ -1,6 +1,7 @@
 package org.blueline.api.model.dto;
 
 import org.blueline.api.model.enums.Sex;
+import org.blueline.api.model.enums.Status;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,4 +27,8 @@ public class UserDto {
     private @Email String email;
 
     private Sex sex;
+
+    private String avatar;
+
+    private Status status;
 }

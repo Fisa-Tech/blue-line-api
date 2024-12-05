@@ -1,6 +1,7 @@
 package org.blueline.api.model;
 
 import org.blueline.api.model.enums.Sex;
+import org.blueline.api.model.enums.Status;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,4 +30,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     private Sex sex;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
 }
