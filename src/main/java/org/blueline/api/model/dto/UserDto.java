@@ -14,7 +14,7 @@ public class UserDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-
+    
     @Schema(description = "User's first name", required = true)
     private String firstname;
 
