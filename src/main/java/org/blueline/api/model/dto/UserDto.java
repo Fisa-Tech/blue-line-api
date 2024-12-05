@@ -13,12 +13,17 @@ public class UserDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-    private String username;
+
+    @Schema(description = "User's first name", required = true)
+    private String firstname;
+
+    @Schema(description = "User's last name", required = true)
+    private String lastname;
+
     @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
+
     private @Email String email;
-    private String address;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private boolean isAdmin;
+
     private Sex sex;
 }
