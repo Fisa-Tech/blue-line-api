@@ -1,10 +1,10 @@
 -- liquibase formatted sql
 
 -- changeset mathi:1733390840793-1
-ALTER TABLE users ADD firstname VARCHAR(255) NOT NULL;
+ALTER TABLE users ADD firstname VARCHAR(255);
 
 -- changeset mathi:1733390840793-2
-ALTER TABLE users ADD lastname VARCHAR(255) NOT NULL;
+ALTER TABLE users ADD lastname VARCHAR(255);
 
 -- changeset mathi:1733390840793-3
 ALTER TABLE users ADD sex VARCHAR(255);
