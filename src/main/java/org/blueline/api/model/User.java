@@ -15,8 +15,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -24,21 +27,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "sexe", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Sex sexe;
-
-    @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     private Sex sex;
-
-    public void setIsAdmin(Boolean is_admin){
-        this.isAdmin = is_admin;
-    }
 }

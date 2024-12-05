@@ -13,9 +13,6 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.typeMap(UserDto.class, User.class).addMappings(mapper -> {
-            mapper.skip(User::setIsAdmin);
-        });
         
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
