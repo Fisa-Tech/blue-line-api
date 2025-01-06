@@ -32,12 +32,9 @@ import org.springframework.stereotype.Component;
                 return context.getDestination();
             });
 
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        
-        modelMapper.getConfiguration()
-                .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
-        return modelMapper;
+            modelMapper.getConfiguration()
+                    .setFieldMatchingEnabled(true)
+                    .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+            return modelMapper;
+            }
     }
