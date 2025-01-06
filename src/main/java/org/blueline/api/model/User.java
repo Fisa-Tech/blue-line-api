@@ -6,14 +6,22 @@ import org.blueline.api.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.blueline.api.model.enums.Sex;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 @Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "firstname")
@@ -38,4 +46,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin;
+
+    @ManyToMany(mappedBy = "participants")
+    private Set<Event> joinedEvents = new HashSet<>();
 }
