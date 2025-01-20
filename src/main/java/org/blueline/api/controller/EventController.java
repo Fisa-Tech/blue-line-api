@@ -1,5 +1,6 @@
 package org.blueline.api.controller;
 
+import org.blueline.api.service.ChallengeService;
 import org.blueline.api.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 import org.blueline.api.model.EventStatus;
+import org.blueline.api.model.dto.ChallengeDto;
 import org.blueline.api.model.dto.EventDto;
 import org.blueline.api.model.dto.ExceptionDto;
 
@@ -30,6 +32,7 @@ import org.blueline.api.model.dto.ExceptionDto;
 public class EventController {
 
     private final EventService eventService;
+    private final ChallengeService challengeService;
 
     @PostMapping
     @Operation(
@@ -154,6 +157,25 @@ public class EventController {
         return new ResponseEntity<>(eventService.leaveEvent(id, authentication), HttpStatus.OK);
     }
 
-
+    @PostMapping("/{eventId}/challenges")
+        @Operation(
+        summary = "Create a new challenge linked to an event",
+        description = "Creates a challenge and automatically links it to the specified event.",
+        responses = {
+                @ApiResponse(responseCode = "201", description = "Challenge created"),
+                @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+                @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+                @ApiResponse(responseCode = "404", description = "Event not found", content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+                @ApiResponse(responseCode = "409", description = "Conflict", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+        },
+        security = @SecurityRequirement(name = "bearerAuth")
+        )
+        public ResponseEntity<ChallengeDto> createChallengeForEvent(@PathVariable("eventId") Long eventId,
+                                                                @Valid @RequestBody ChallengeDto challengeDto,
+                                                                Authentication authentication) {
+        
+        ChallengeDto createdChallenge = challengeService.createChallengeForEvent(eventId, challengeDto, authentication);
+        return new ResponseEntity<>(createdChallenge, HttpStatus.CREATED);
+        }
 }
 
