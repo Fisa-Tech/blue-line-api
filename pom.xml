@@ -145,8 +145,8 @@
                     <diffChangeLogFile>
                         src/main/resources/db/migrations/${timestamp}-migration.sql
                     </diffChangeLogFile>
-                    <url>jdbc:postgresql://localhost:5432/blue-line</url>
                     <referenceUrl>hibernate:spring:org.blueline.api.model?dialect=org.hibernate.dialect.PostgreSQLDialect</referenceUrl>
+                    <url>jdbc:postgresql://localhost:5432/blue-line</url>
                     <username>postgres</username>
                     <password>password</password>
                     <defaultSchemaName />
