@@ -36,7 +36,6 @@ public class ChallengeService {
     private UserDto mapUserEntityToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         return dto;
     }
