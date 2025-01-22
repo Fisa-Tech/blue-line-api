@@ -46,11 +46,11 @@ databaseChangeLog:
             stripComments: true
 
   - changeSet:
-      id: 0006-update-all-tables
+      id: 0006-add-challenges-and-event
       author: Aurélien
       changes:
         - sqlFile:
-            path: 0006-update-all-tables.sql
+            path: 0006-add-challenges-and-event.sql
             relativeToChangelogFile: true
             encoding: UTF-8
             splitStatements: true
