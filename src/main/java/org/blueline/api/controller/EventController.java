@@ -1,6 +1,7 @@
 package org.blueline.api.controller;
 
 import org.blueline.api.service.ChallengeService;
+
 import org.blueline.api.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -177,5 +178,6 @@ public class EventController {
         ChallengeDto createdChallenge = challengeService.createChallengeForEvent(eventId, challengeDto, authentication);
         return new ResponseEntity<>(createdChallenge, HttpStatus.CREATED);
         }
+
 }
 
