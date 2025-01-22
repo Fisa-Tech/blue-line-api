@@ -46,5 +46,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "blue-line-api": "file:"
   }
 }

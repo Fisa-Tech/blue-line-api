@@ -1,20 +1,34 @@
 package org.blueline.api.model;
 
+import org.blueline.api.model.enums.Sex;
+import org.blueline.api.model.enums.Status;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import org.blueline.api.model.enums.Sex;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 @Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -22,13 +36,19 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "sexe", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Sex sexe;
+    @Column(name = "sex")
+    private Sex sex;
 
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
+
+    @ManyToMany(mappedBy = "participants")
+    private Set<Event> joinedEvents = new HashSet<>();
 }
