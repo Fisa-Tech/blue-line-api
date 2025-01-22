@@ -1,16 +1,13 @@
 package org.blueline.api.model;
 
-import org.blueline.api.model.enums.Sex;
+import org.blueline.api.model.enums.Gender;
 import org.blueline.api.model.enums.Status;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.blueline.api.model.enums.Sex;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.*;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
@@ -36,9 +33,12 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "sex")
-    private Sex sex;
+    @Column(name = "gender")
+    private Gender gender;
 
     @Column(name = "avatar")
     private String avatar;
