@@ -18,12 +18,12 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDto register(String password, UserDto userDto) {
+    public UserDto register(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new ConflictException("Email already exists");
         } else {
             User user = modelMapper.map(userDto, User.class);
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             return modelMapper.map(userRepository.save(user), UserDto.class);
         }
     }
