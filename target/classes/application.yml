@@ -18,6 +18,10 @@ spring:
   liquibase:
     change-log: classpath:db/migrations/db.changelog-master.yaml
     enabled: true
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/blue-line}
+    user: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
 
 management:
   endpoints:
