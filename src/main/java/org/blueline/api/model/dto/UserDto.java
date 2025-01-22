@@ -1,5 +1,9 @@
 package org.blueline.api.model.dto;
 
+import org.blueline.api.model.enums.Gender;
+import org.blueline.api.model.enums.Status;
+
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -9,10 +13,18 @@ public class UserDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-    private String username;
-    @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
-    private String password;
+    
+    @Schema(description = "User's first name", required = true)
+    private String firstname;
+
+    @Schema(description = "User's last name", required = true)
+    private String lastname;
+    
     private @Email String email;
-    private String address;
-    private boolean isAdmin;
+
+    private Gender gender;
+
+    private String avatar;
+
+    private Status status;
 }

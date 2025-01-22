@@ -10,7 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -19,23 +19,23 @@ services:
     networks:
       - blue-line-network
 
-  api:
-    image: blue-line-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      PORT: 8080
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blue-line
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - blue-line-network
+  # api:
+  #   image: blue-line-api
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     PORT: 8080
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blue-line
+  #     SPRING_DATASOURCE_USERNAME: postgres
+  #     SPRING_DATASOURCE_PASSWORD: password
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - blue-line-network
 
 volumes:
   db_data:
