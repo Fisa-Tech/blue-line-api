@@ -33,9 +33,6 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
@@ -46,6 +43,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
 

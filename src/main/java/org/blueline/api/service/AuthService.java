@@ -3,6 +3,7 @@ package org.blueline.api.service;
 import lombok.RequiredArgsConstructor;
 import org.blueline.api.exception.UnauthorizedException;
 import org.blueline.api.model.User;
+import org.blueline.api.model.dto.LoginDto;
 import org.blueline.api.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +17,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public String login(String email, String password) {
-        User user = userRepository.findByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+    public String login(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail());
+        if (user != null && passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             return jwtService.generateToken(user);
         }
         throw new UnauthorizedException("Invalid login credentials");

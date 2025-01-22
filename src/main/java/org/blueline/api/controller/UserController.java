@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.blueline.api.model.dto.ExceptionDto;
+import org.blueline.api.model.dto.LoginDto;
 import org.blueline.api.model.dto.UserDto;
 import org.blueline.api.service.AuthService;
 import org.blueline.api.service.UserService;
@@ -42,9 +43,8 @@ public class UserController {
             }
     )
     public ResponseEntity<UserDto> register(
-            @Parameter(description = "Password of the user", required = true) @RequestParam String password,
             @Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.register(password, userDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -58,9 +58,8 @@ public class UserController {
             }
     )
     public ResponseEntity<String> login(
-            @Parameter(description = "Email of the user", required = true) @Email @RequestParam String email,
-            @Parameter(description = "Password of the user", required = true) @RequestParam String password) {
-        return new ResponseEntity<>(authService.login(email, password), HttpStatus.OK);
+            @Valid @RequestBody LoginDto loginDto) {
+        return new ResponseEntity<>(authService.login(loginDto), HttpStatus.OK);
     }
 
     @GetMapping("/me")

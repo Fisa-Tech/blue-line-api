@@ -15,13 +15,17 @@ public class UserDto {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "User's first name", required = true)
+    @Schema(description = "User's first name")
     private String firstname;
 
-    @Schema(description = "User's last name", required = true)
+    @Schema(description = "User's last name")
     private String lastname;
 
+    @Schema(description = "User's email", requiredMode = Schema.RequiredMode.REQUIRED)
     private @Email String email;
+
+    @Schema(description = "User's password", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String password;
 
     private Gender gender;
 
