@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "challenge")
 @Data
 public class Challenge {
 
@@ -28,10 +29,10 @@ public class Challenge {
     @Column(length = 500)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "start_date")
     private LocalDateTime startDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "end_date")
     private LocalDateTime endDate;
 
     // Type de challenge : DISTANCE ou TIME
@@ -40,16 +41,20 @@ public class Challenge {
     private ChallengeType type;
 
     // Objectif distance (en km). Null si type = TIME
+    @Column(name="distance_goal")
     private Double distanceGoal;
 
     // Objectif temps (en secondes). Null si type = DISTANCE
+    @Column(name = "time_goal")
     private Long timeGoal;
 
     // Périodicité du streak (facultatif), ex: DAY, WEEK, ...
     @Enumerated(EnumType.STRING)
+    @Column(name = "streak_period")
     private StreakPeriod streakPeriod;
 
     // Nombre de participations requises dans la période définie pour valider le streak
+    @Column(name = "streak_nb_of_participations")
     private Integer streakNbOfParticipations;
 
     // État du défi : A_RELEVER, EN_COURS, TERMINE
