@@ -7,6 +7,7 @@ import org.blueline.api.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 @Entity
+@Table(name = "challenge_completion")
 @Data
 public class ChallengeCompletion {
 
@@ -23,11 +24,14 @@ public class ChallengeCompletion {
     private User user;
 
     // Distance parcourue si type DISTANCE
+    @Column(name = "distance_achieved")
     private Double distanceAchieved;
 
     // Temps réalisé si type TIME (en secondes)
+    @Column(name = "time_achieved")
     private Long timeAchieved;
 
+    @Column(name = "completion_date")
     private LocalDateTime completionDate;
 
     public void setChallenge(Challenge challenge2) {
