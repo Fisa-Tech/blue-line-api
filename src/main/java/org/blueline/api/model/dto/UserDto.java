@@ -21,10 +21,13 @@ public class UserDto {
     @Schema(description = "User's last name")
     private String lastname;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "User's friend Id")
+    private String friendId;
+
     @Schema(description = "User's email", requiredMode = Schema.RequiredMode.REQUIRED)
     private @Email String email;
 
-    @Schema(description = "User's password", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "User's password", requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
 
     private Gender gender;

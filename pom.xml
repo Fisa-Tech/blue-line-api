@@ -125,6 +125,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- Hashids -->
+        <dependency>
+            <groupId>org.hashids</groupId>
+            <artifactId>hashids</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <repositories>

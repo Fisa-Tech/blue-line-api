@@ -1,7 +1,6 @@
 package org.blueline.api.model.challenge;
 import java.time.LocalDateTime;
 
-import org.blueline.api.model.Event;
 import org.blueline.api.model.User;
 
 import jakarta.persistence.*;

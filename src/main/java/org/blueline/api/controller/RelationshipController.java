@@ -31,7 +31,7 @@ public class RelationshipController {
 
     private final RelationshipService relationshipService;
 
-    @PostMapping("/{userReceiverId}")
+    @PostMapping("/{userReceiverFriendId}")
     @Operation(
             summary = "Create a relationship request",
             description = "A user can create a relationship request.",
@@ -44,8 +44,8 @@ public class RelationshipController {
             },
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    public ResponseEntity<RelationshipDto> create(@PathVariable Long userReceiverId, Authentication authentication) {
-        return new ResponseEntity<>(relationshipService.create(authentication, userReceiverId), HttpStatus.OK);
+    public ResponseEntity<RelationshipDto> create(@PathVariable String userReceiverFriendId, Authentication authentication) {
+        return new ResponseEntity<>(relationshipService.create(authentication, userReceiverFriendId), HttpStatus.OK);
     }
 
     @GetMapping("/pending")

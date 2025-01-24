@@ -5,10 +5,13 @@ import org.blueline.api.exception.ConflictException;
 import org.blueline.api.model.User;
 import org.blueline.api.model.dto.UserDto;
 import org.blueline.api.repository.UserRepository;
+import org.hashids.Hashids;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class UserService {
         } else {
             User user = modelMapper.map(userDto, User.class);
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            modelMapper.map(userRepository.save(user), UserDto.class);
+            user.setFriendId(generateUniqueFriendCode(user.getId()));
             return modelMapper.map(userRepository.save(user), UserDto.class);
         }
     }
@@ -58,5 +63,11 @@ public class UserService {
         User user = authService.authenticate(authentication);
         userRepository.delete(user);
     }
+
+    public static String generateUniqueFriendCode(long number) {
+        Hashids hashids = new Hashids("BlueLine-2025@secureSeed#v1", 5, "0123456789abcdefghijkmnpqrstuvwxyz");
+        return hashids.encode(number);
+    }
+
 }
 
