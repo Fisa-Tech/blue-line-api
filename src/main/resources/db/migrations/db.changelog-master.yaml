@@ -77,3 +77,14 @@ databaseChangeLog:
             encoding: UTF-8
             splitStatements: true
             stripComments: true
+
+  - changeSet:
+      id: 0009-add-friendId-to-users-table
+      author: Aurélien
+      changes:
+        - sqlFile:
+            path: 0009-add-friendId-to-users-table.sql
+            relativeToChangelogFile: true
+            encoding: UTF-8
+            splitStatements: true
+            stripComments: true

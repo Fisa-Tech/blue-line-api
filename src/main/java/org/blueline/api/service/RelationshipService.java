@@ -1,9 +1,9 @@
 package org.blueline.api.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.blueline.api.exception.BadRequestException;
 import org.blueline.api.exception.ForbiddenException;
+import org.blueline.api.exception.NotFoundException;
 import org.blueline.api.model.Relationship;
 import org.blueline.api.model.User;
 import org.blueline.api.model.dto.RelationshipDto;
@@ -25,11 +25,11 @@ public class RelationshipService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
 
-    public RelationshipDto create(Authentication authentication, Long userReceiverId) {
+    public RelationshipDto create(Authentication authentication, String userReceiverFriendId) {
         User user = authService.authenticate(authentication);
 
-        User receiver = userRepository.findById(userReceiverId)
-                .orElseThrow(() -> new EntityNotFoundException("User receiver not found with id: " + userReceiverId));
+        User receiver = userRepository.findByFriendId(userReceiverFriendId)
+                .orElseThrow(() -> new NotFoundException("User receiver not found with friend id: " + userReceiverFriendId));
         Relationship relationship = new Relationship();
         relationship.setUserAsker(user);
         relationship.setUserReceiver(receiver);
@@ -43,7 +43,8 @@ public class RelationshipService {
         } else if (relationshipRepository.existsByUserAskerAndUserReceiverAndRequestStatus(user, relationship.getUserReceiver(), RequestStatus.PENDING)) {
             throw new BadRequestException("Relationship request already exists");
         } else if (!userRepository.existsById(relationship.getUserReceiver().getId())) {
-            throw new EntityNotFoundException("User receiver not found with id: " + relationship.getUserReceiver().getId());
+            throw new
+                    NotFoundException("User receiver not found with id: " + relationship.getUserReceiver().getId());
         }
 
         return modelMapper.map(relationshipRepository.save(relationship), RelationshipDto.class);
@@ -53,7 +54,7 @@ public class RelationshipService {
         User user = authService.authenticate(authentication);
 
         Relationship relationship = relationshipRepository.findById(relationshipId)
-                .orElseThrow(() -> new EntityNotFoundException("Relationship not found with id: " + relationshipId));
+                .orElseThrow(() -> new NotFoundException("Relationship not found with id: " + relationshipId));
 
         // check if the edition is possible
         if(!relationship.getRequestStatus().equals(RequestStatus.PENDING)) {
@@ -106,7 +107,7 @@ public class RelationshipService {
     public void deleteRelationship(Long friendId, Authentication authentication) {
         User user = authService.authenticate(authentication);
         User friend = userRepository.findById(friendId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + friendId));
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + friendId));
 
         List<Relationship> relationships = relationshipRepository
                 .findAllByUserAskerAndUserReceiverAndRequestStatus(user, friend, RequestStatus.ACCEPTED);

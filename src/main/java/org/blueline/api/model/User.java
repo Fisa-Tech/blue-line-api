@@ -27,6 +27,9 @@ public class User {
     @Column(name = "lastname")
     private String lastname;
 
+    @Column(name = "friend_id", unique = true)
+    private String friendId;
+
     @Column(name = "password", nullable = false)
     private String password;
 
