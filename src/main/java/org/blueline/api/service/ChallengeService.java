@@ -111,8 +111,8 @@ public class ChallengeService {
 
     private ChallengeDto mapEntityToDto(Challenge entity) {
         ChallengeDto dto = new ChallengeDto();
-        // dto.setId(entity.getId());
-        // dto.setEventId(entity.getEvent() != null ? entity.getEvent().getId() : null);
+        dto.setId(entity.getId());
+        dto.setEventId(entity.getEvent() != null ? entity.getEvent().getId() : null);
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setStartDate(entity.getStartDate());
