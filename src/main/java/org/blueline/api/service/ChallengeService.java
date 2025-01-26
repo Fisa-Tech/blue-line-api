@@ -11,6 +11,7 @@ import org.blueline.api.model.challenge.Challenge;
 import org.blueline.api.model.challenge.ChallengeCompletion;
 import org.blueline.api.model.challenge.ChallengeStatus;
 import org.blueline.api.model.dto.ChallengeDto;
+import org.blueline.api.model.dto.EventDto;
 import org.blueline.api.model.dto.UserDto;
 import org.blueline.api.repository.ChallengeCompletionRepository;
 import org.blueline.api.repository.ChallengeRepository;
@@ -163,5 +164,12 @@ public class ChallengeService {
         return participants.stream()
                 .map(this::mapUserEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+
+    public ChallengeDto getChallengeById(Long id) {
+        Challenge challenge = challengeRepository.findById(id)
+                .orElseThrow();
+        return modelMapper.map(challenge, ChallengeDto.class);
     }
 }
