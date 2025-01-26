@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.blueline.api.model.challenge.ChallengeStatus;
 import org.blueline.api.model.dto.ChallengeDto;
+import org.blueline.api.model.dto.EventDto;
 import org.blueline.api.model.dto.ExceptionDto;
 import org.blueline.api.model.dto.UserDto;
 import org.blueline.api.service.ChallengeService;
@@ -188,6 +189,21 @@ public class ChallengeController {
         public ResponseEntity<List<ChallengeDto>> getAllChallenges() {
                 List<ChallengeDto> challenges = challengeService.getAllChallenges();
                 return ResponseEntity.ok(challenges);
+        }
+
+
+        @GetMapping("{id}")
+        @Operation(
+                summary = "Get a challenge by ID",
+                description = "Retrieves the details of a specific event by its ID.",
+                responses = {
+                        @ApiResponse(responseCode = "200", description = "Event found"),
+                        @ApiResponse(responseCode = "404", description = "Event not found", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+                },
+                security = @SecurityRequirement(name = "bearerAuth")
+        )
+        public ResponseEntity<ChallengeDto> getChallengeById(@PathVariable Long id) {
+                return new ResponseEntity<>(challengeService.getChallengeById(id), HttpStatus.OK);
         }
 }
 
