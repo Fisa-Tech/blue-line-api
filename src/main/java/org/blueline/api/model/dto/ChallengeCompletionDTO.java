@@ -2,6 +2,8 @@ package org.blueline.api.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChallengeCompletionDTO {
-
-    // private Long userId; 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY) //il faudrait en fait créer un deuxieme DTO pour etre plus propre, mais nous manquons de temps pour le faire
+    private Long userId; 
     private Double distanceAchieved;
     private Long timeAchieved;
     private LocalDateTime completionDate; 

@@ -125,7 +125,8 @@ public class ChallengeCompletionService {
     // ---------------------------
     private ChallengeCompletionDTO mapToDto(ChallengeCompletion entity) {
         ChallengeCompletionDTO dto = new ChallengeCompletionDTO();
-        // dto.setUserId(entity.getUser().getId());
+        dto.setId(entity.getId());
+        dto.setUserId(entity.getUser().getId());
         dto.setDistanceAchieved(entity.getDistanceAchieved());
         dto.setTimeAchieved(entity.getTimeAchieved());
         dto.setCompletionDate(entity.getCompletionDate());
