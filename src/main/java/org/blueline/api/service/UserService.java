@@ -12,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 import java.util.Random;
 
@@ -71,6 +74,19 @@ public class UserService {
         return hashids.encode(number);
     }
 
+    public UserDto getUserById(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("User not found with id " + userId));
+    
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        
+        // Force le password à null pour ne pas l'exposer dans la réponse
+        userDto.setPassword(null);
+    
+        return userDto;
+    }
+
+
     public List<UserDto> getAll(Authentication authentication) {
         User user = authService.authenticate(authentication);
 
@@ -81,5 +97,6 @@ public class UserService {
                 .map(u -> modelMapper.map(u, UserDto.class))
                 .toList();
     }
+
 }
 
