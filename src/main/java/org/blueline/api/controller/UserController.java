@@ -21,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -74,6 +76,20 @@ public class UserController {
     )
     public ResponseEntity<UserDto> getMe(Authentication authentication) {
         return new ResponseEntity<>(userService.getMe(authentication), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @Operation(
+            summary = "Get all users",
+            description = "The user must be authenticated and admin",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User found"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            },
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<List<UserDto>> getAll(Authentication authentication) {
+        return new ResponseEntity<>(userService.getAll(authentication), HttpStatus.OK);
     }
 
     @PutMapping("/me")
@@ -131,6 +147,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
         @GetMapping("/{id}")
         @Operation(
         summary = "Get user by ID",
@@ -146,6 +163,23 @@ public class UserController {
         UserDto userDto = userService.getUserById(id);
         return ResponseEntity.ok(userDto);
         }
+
+    @GetMapping("/auth/verify")
+    @Operation(
+            summary = "Verify if the user is authenticated",
+            description = "Returns 200 if the user is authenticated, or 401 if not.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User is authenticated"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            },
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<String> verify(Authentication authentication) {
+        if (authentication == null || authService.authenticate(authentication) == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("Authenticated", HttpStatus.OK);
+    }
 
 }
 
