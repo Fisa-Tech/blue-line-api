@@ -148,21 +148,21 @@ public class UserController {
     }
 
 
-        @GetMapping("/{id}")
-        @Operation(
-        summary = "Get user by ID",
-        description = "Returns the user's information based on the given ID.",
-        responses = {
-                @ApiResponse(responseCode = "200", description = "User found"),
-                @ApiResponse(responseCode = "404", description = "User not found", 
-                content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
-        },
-        security = @SecurityRequirement(name = "bearerAuth")
-        )
-        public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get user by ID",
+            description = "Returns the user's information based on the given ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User found"),
+                    @ApiResponse(responseCode = "404", description = "User not found",
+                            content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            },
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         UserDto userDto = userService.getUserById(id);
         return ResponseEntity.ok(userDto);
-        }
+    }
 
     @GetMapping("/auth/verify")
     @Operation(

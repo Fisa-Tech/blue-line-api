@@ -77,13 +77,7 @@ public class UserService {
     public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new EntityNotFoundException("User not found with id " + userId));
-    
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        
-        // Force le password à null pour ne pas l'exposer dans la réponse
-        userDto.setPassword(null);
-    
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
     }
 
 

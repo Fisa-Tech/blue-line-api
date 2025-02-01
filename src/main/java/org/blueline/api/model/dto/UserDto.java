@@ -1,5 +1,6 @@
 package org.blueline.api.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.blueline.api.model.enums.Gender;
 import org.blueline.api.model.enums.Status;
 
@@ -27,6 +28,7 @@ public class UserDto {
     @Schema(description = "User's email", requiredMode = Schema.RequiredMode.REQUIRED)
     private @Email String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Schema(description = "User's password", requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
 
