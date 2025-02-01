@@ -88,3 +88,25 @@ databaseChangeLog:
             encoding: UTF-8
             splitStatements: true
             stripComments: true
+
+  - changeSet:
+      id: 0010-create-activity-logs-table
+      author: Aurélien
+      changes:
+        - sqlFile:
+            path: 0010-create-activity-logs-table.sql
+            relativeToChangelogFile: true
+            encoding: UTF-8
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 0011-increase-avatar-field-length
+      author: Aurélien
+      changes:
+        - sqlFile:
+            path: 0011-increase-avatar-field-length.sql
+            relativeToChangelogFile: true
+            encoding: UTF-8
+            splitStatements: true
+            stripComments: true
