@@ -25,6 +25,17 @@ public class AuthService {
         throw new UnauthorizedException("Invalid login credentials");
     }
 
+    public String loginAdmin(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail());
+        if(user != null && !user.isAdmin()) {
+            throw new UnauthorizedException("You do not have permission get all users");
+        }
+        if (user != null && passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            return jwtService.generateToken(user);
+        }
+        throw new UnauthorizedException("Invalid login credentials");
+    }
+
     public User authenticate(Authentication authentication) {
         return userRepository.findById(jwtService.getUserIdFromToken(authentication.getPrincipal().toString())).orElseThrow(() -> new UnauthorizedException("Invalid token"));
     }

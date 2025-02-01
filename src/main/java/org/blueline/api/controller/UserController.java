@@ -64,6 +64,21 @@ public class UserController {
         return new ResponseEntity<>(authService.login(loginDto), HttpStatus.OK);
     }
 
+    @PostMapping("/login/admin")
+    @Operation(
+            summary = "Login an admin user",
+            description = "There is no need to be authenticated to login a user. The token returned is used to authenticate the user in the future.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User logged in"),
+                    @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ExceptionDto.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            }
+    )
+    public ResponseEntity<String> loginAdmin(
+            @Valid @RequestBody LoginDto loginDto) {
+        return new ResponseEntity<>(authService.loginAdmin(loginDto), HttpStatus.OK);
+    }
+
     @GetMapping("/me")
     @Operation(
             summary = "Get the authenticated user",
