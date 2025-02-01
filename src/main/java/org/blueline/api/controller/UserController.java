@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.blueline.api.model.User;
 import org.blueline.api.model.dto.ExceptionDto;
 import org.blueline.api.model.dto.LoginDto;
 import org.blueline.api.model.dto.UserDto;
@@ -192,6 +193,28 @@ public class UserController {
     public ResponseEntity<String> verify(Authentication authentication) {
         if (authentication == null || authService.authenticate(authentication) == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("Authenticated", HttpStatus.OK);
+    }
+
+    @GetMapping("/auth/verify/admin")
+    @Operation(
+            summary = "Verify if the user is admin and is authenticated",
+            description = "Returns 200 if the user is admin and is authenticated, or 401 if not.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User is authenticated"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = ExceptionDto.class)))
+            },
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<String> verifyAdmin(Authentication authentication) {
+        if (authentication == null ) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        } else {
+            User user = authService.authenticate(authentication);
+            if(user == null || !user.isAdmin()) {
+                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            }
         }
         return new ResponseEntity<>("Authenticated", HttpStatus.OK);
     }
