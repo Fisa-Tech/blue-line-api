@@ -85,6 +85,8 @@ public class ActivityLogService {
                 userAction
         );
 
+        int totalActions = activityLogs.size();
+
         int totalActiveUsersCount = (int) activityLogs.stream()
                 .map(ActivityLog::getUser)
                 .distinct()
@@ -112,8 +114,8 @@ public class ActivityLogService {
 
         ActiveUsersDto activeUsersDto = new ActiveUsersDto();
         activeUsersDto.setTotalActiveUsers(totalActiveUsersCount);
+        activeUsersDto.setTotalActions(totalActions);
         activeUsersDto.setActiveUsersPerPeriod(activeUsersCountByPeriod);
-
 
         return ResponseEntity.ok(activeUsersDto);
     }
