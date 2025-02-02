@@ -14,5 +14,7 @@ public class ActiveUsersDto {
 
     private int totalActiveUsers;
 
+    private int totalActions;
+
     private Map<Timestamp, Integer> activeUsersPerPeriod;
 }
