@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.blueline.api.model.User;
 import org.blueline.api.model.dto.ExceptionDto;
