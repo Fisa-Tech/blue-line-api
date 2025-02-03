@@ -25,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ActivityLogService activityLogService;
 
     public UserDto register(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
@@ -34,6 +35,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             modelMapper.map(userRepository.save(user), UserDto.class);
             user.setFriendId(generateUniqueFriendCode(user.getId()));
+            activityLogService.addRegisterActivity(user);
             return modelMapper.map(userRepository.save(user), UserDto.class);
         }
     }

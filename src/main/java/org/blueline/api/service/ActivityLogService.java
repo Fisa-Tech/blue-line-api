@@ -41,6 +41,16 @@ public class ActivityLogService {
         activityLogRepository.save(activityLog);
     }
 
+    public void addRegisterActivity(User user) {
+        ActivityLog activityLog = new ActivityLog();
+
+        activityLog.setUser(user);
+        activityLog.setAction(UserAction.REGISTER);
+        activityLog.setTimestamp(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+
+        activityLogRepository.save(activityLog);
+    }
+
     private UserAction getUserAction(String action, String endpoint) {
         String joinEventRegex = "^api/events/\\d+/join$";
         Pattern joinEventPattern = Pattern.compile(joinEventRegex);
@@ -74,9 +84,11 @@ public class ActivityLogService {
             throw new UnauthorizedException("You do not have permission to get users statistics");
         }
 
+        // Conversion des dates de début et de fin
         LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
         LocalDateTime end = LocalDate.parse(endDate).atTime(23, 59, 59);
 
+        // Récupération des logs d'activité des utilisateurs
         List<ActivityLog> activityLogs = activityLogRepository.findActiveUsers(
                 start,
                 end,
@@ -85,20 +97,22 @@ public class ActivityLogService {
                 userAction
         );
 
+        // Nombre total d'actions effectuées
         int totalActions = activityLogs.size();
 
+        // Nombre total d'utilisateurs distincts actifs
         int totalActiveUsersCount = (int) activityLogs.stream()
                 .map(ActivityLog::getUser)
                 .distinct()
                 .count();
 
+        // Map pour stocker les utilisateurs actifs par période
         Map<Timestamp, Set<Long>> activeUsersByPeriod = new TreeMap<>();
 
+        // Remplir la map avec les utilisateurs actifs par période
         for (ActivityLog log : activityLogs) {
             LocalDateTime timestamp = log.getTimestamp();
             Long userId = log.getUser().getId();
-
-
             LocalDateTime periodStart = getPeriodStart(timestamp, period);
 
             activeUsersByPeriod
@@ -106,19 +120,44 @@ public class ActivityLogService {
                     .add(userId);
         }
 
+        // Créer une map avec le nombre d'utilisateurs actifs par période
         Map<Timestamp, Integer> activeUsersCountByPeriod = activeUsersByPeriod.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> entry.getValue().size()
                 ));
 
+        // Ajouter les jours sans activité avec une valeur de 0
+        Map<Timestamp, Integer> finalActiveUsersCountByPeriod = new TreeMap<>();
+
+        LocalDate currentDate = getPeriodStart(start, period).toLocalDate();
+        while (!currentDate.isAfter(end.toLocalDate())) {
+            Timestamp timestamp = Timestamp.valueOf(currentDate.atStartOfDay());
+
+            finalActiveUsersCountByPeriod.putIfAbsent(timestamp, activeUsersCountByPeriod.getOrDefault(timestamp, 0));
+
+            // Avancer en fonction de la période choisie
+            if (period == Period.DAY) {
+                currentDate = currentDate.plusDays(1);
+            } else if (period == Period.WEEK) {
+                currentDate = currentDate.plusWeeks(1);
+            } else if (period == Period.MONTH) {
+                currentDate = currentDate.plusMonths(1);
+            } else if (period == Period.YEAR) {
+                currentDate = currentDate.plusYears(1);
+            }
+        }
+
+        // Créer l'objet ActiveUsersDto et y ajouter les données
         ActiveUsersDto activeUsersDto = new ActiveUsersDto();
         activeUsersDto.setTotalActiveUsers(totalActiveUsersCount);
         activeUsersDto.setTotalActions(totalActions);
-        activeUsersDto.setActiveUsersPerPeriod(activeUsersCountByPeriod);
+        activeUsersDto.setActiveUsersPerPeriod(finalActiveUsersCountByPeriod);
 
+        // Retourner la réponse avec les statistiques des utilisateurs actifs
         return ResponseEntity.ok(activeUsersDto);
     }
+
 
     private LocalDateTime getPeriodStart(LocalDateTime timestamp, Period period) {
         return switch (period) {
