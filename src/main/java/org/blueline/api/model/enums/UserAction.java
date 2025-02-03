@@ -5,5 +5,6 @@ public enum UserAction {
     CREATE_CHALLENGE,
     JOIN_EVENT,
     JOIN_CHALLENGE,
+    REGISTER,
     OTHER
 }
